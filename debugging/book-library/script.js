@@ -28,22 +28,30 @@ const check = document.getElementById("check");
 //check the right input from forms and if its ok -> add the new book (object in array)
 //via Book function and start render function
 function submit() {
-  if (
-    title.value == null ||
-    title.value == "" ||
-    author.value == null ||
-    author.value == "" ||
-    pages.value == null ||
-    pages.value == ""
-  ) {
+  if (!title.value || !author.value || !pages.value) {
     alert("Please fill all fields!");
     return false;
-  } else {
-    let book = new Book(title.value, author.value, pages.value, check.checked);
-    myLibrary.push(book);
-    render();
   }
+
+  let duplicate = myLibrary.some(b => 
+    b.title === title.value && b.author === author.value && b.pages === pages.value
+  );
+
+  if (duplicate) {
+    alert("This book is already in your library!");
+    return;
+  }
+
+  let book = new Book(title.value, author.value, pages.value, check.checked);
+  myLibrary.push(book);
+  render();
+
+  title.value = "";
+  author.value = "";
+  pages.value = "";
+  check.checked = false;
 }
+
 
 function Book(title, author, pages, check) {
   this.title = title;
@@ -71,10 +79,6 @@ function render() {
     titleCell.innerHTML = myLibrary[i].title;
     authorCell.innerHTML = myLibrary[i].author;
     pagesCell.innerHTML = myLibrary[i].pages;
-
-    if (check === true) {
-      myLibrary[i].check === true;
-    } else {myLibrary[i].check === false};
 
     //add and wait for action for read/unread button
     let changeBut = document.createElement("button");
