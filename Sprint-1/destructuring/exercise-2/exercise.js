@@ -70,3 +70,28 @@ let hogwarts = [
     occupation: "Teacher",
   },
 ];
+
+
+// Task 1: Displaying the names of Gryffindors
+
+function gryffindorStudents(data) {
+  for (let { firstName, lastName, house } of data) {
+    if (house === "Gryffindor") {
+      console.log(`${firstName} ${lastName}`);
+    }
+  }
+}
+
+gryffindorStudents(hogwarts);
+
+// Task 2: Displaying the names of teachers who have pets
+
+function teacherWithPets(data) {
+  for (let {firstName, lastName, pet, occupation} of data) {
+    if (pet !== null && occupation === "Teacher") {
+      console.log(`${firstName} ${lastName}`);
+    }
+  }
+}
+
+teacherWithPets(hogwarts);
