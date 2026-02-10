@@ -31,6 +31,8 @@ function submit() {
   if (
     title.value == null ||
     title.value == "" ||
+    author.value == null ||
+    author.value == "" ||
     pages.value == null ||
     pages.value == ""
   ) {
@@ -38,7 +40,7 @@ function submit() {
     return false;
   } else {
     let book = new Book(title.value, author.value, pages.value, check.checked);
-    library.push(book);
+    myLibrary.push(book);
     render();
   }
 }
@@ -70,13 +72,17 @@ function render() {
     authorCell.innerHTML = myLibrary[i].author;
     pagesCell.innerHTML = myLibrary[i].pages;
 
+    if (check === true) {
+      myLibrary[i].check === true;
+    } else {myLibrary[i].check === false};
+
     //add and wait for action for read/unread button
     let changeBut = document.createElement("button");
     changeBut.id = i;
     changeBut.className = "btn btn-success";
     wasReadCell.appendChild(changeBut);
     let readStatus = "";
-    if (myLibrary[i].check == false) {
+    if (myLibrary[i].check === true) {
       readStatus = "Yes";
     } else {
       readStatus = "No";
