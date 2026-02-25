@@ -19,21 +19,15 @@ let city = "London";
 // Get weather description + temp/humidity/wind from OpenWeather
 async function getWeather(city) {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${OPENWEATHER_KEY}&units=metric`;
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Weather fetch failed: ${res.status}`);
+  const res = await fetch(url);
+    if (!res.ok) throw new Error("Weather fetch failed");
     const data = await res.json();
     return {
-      description: data.weather[0].description,
-      temp: data.main.temp,
-      humidity: data.main.humidity,
-      wind: data.wind.speed
+        description: data.weather[0].description,
+        temp: data.main.temp,
+        humidity: data.main.humidity,
+        wind: data.wind.speed
     };
-  } catch (err) {
-    console.error(err);
-    conditionsEl.textContent = "Weather not found 😢";
-    return null;
-  }
 }
 
 // Get photos from Unsplash
@@ -105,15 +99,15 @@ async function loadCity(city) {
   photoEl.innerHTML = "";
   thumbsEl.innerHTML = "";
 
-  const weather = await getWeather(city);
-  if (!weather) return;
-
-  // Show description, temp, humidity, wind
-  conditionsEl.textContent = 
-    `Weather in ${city}: ${weather.description}, ${weather.temp}°C, Humidity: ${weather.humidity}%, Wind: ${weather.wind} m/s`;
-
-  const photos = await getPhotos(weather.description);
-  renderPhotos(photos);
+  try {
+    const weather = await getWeather(city);
+    conditionsEl.textContent = `Weather in ${city}: ${weather.description}, ${weather.temp}°C, Humidity: ${weather.humidity}%`;
+    const photos = await getPhotos(weather.description);
+    renderPhotos(photos);
+  } catch (err) {
+    console.error(err);
+    conditionsEl.textContent = "City not found 😢";
+  }
 }
 
 // --------------- Event listeners ----------------
